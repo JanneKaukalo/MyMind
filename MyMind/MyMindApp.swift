@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct MyMindApp: App {
+    
+    init() {
+        MyMindSettings.navBarSettings()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LandingPage()
         }
     }
+    
+    
 }
