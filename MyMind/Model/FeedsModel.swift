@@ -50,7 +50,8 @@ class FeedsModel {
                                                                 "https://www.technologyreview.com/topnews.rss"],
                                                   .environment: ["https://inhabitat.com/environment/feed/"],
                                                   .entertainment: ["https://hollywoodlife.com/feed/"],
-                                                  .finances: ["https://www.ft.com/?format=rss"],
+                                                  .finances: ["https://www.cnbc.com/id/19746125/device/rss/rss.xml",
+                                                              "https://www.moneyweb.co.za/feed/"],
                                                   .travel: ["https://handluggageonly.co.uk/feed/"]]
     
     // keeping reference to periodic feed fetching timer
@@ -64,8 +65,16 @@ class FeedsModel {
     
     // MARK: - API
     // These should come from some dedicated backend, now hardcoded for ui testing
-    private(set) var popularChannels = [Channel.fashion, .auto, .entertainment,
+    private(set) var popularChannels = [Channel.fashion, .entertainment,
                                    .environment, .finances, .travel]
+    
+    // ok, could return popularChannels randomly... but bit confusing
+//    var popularChannels: [Channel] {
+//        (0..<(1..<allChannels.count).randomElement()!)
+//            .reduce(into: Set<Channel>()) { $0.insert(allChannels[$1]) }
+//            .map { $0 }
+//    }
+    
     // same as above
     private(set) var allChannels = [Channel.fashion, .science, .auto, .technology,
                                .entertainment, .environment, .finances, .travel]
