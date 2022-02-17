@@ -58,6 +58,16 @@ class FeedsModel {
     private var feedFetchingTimer: Timer!
     @Published private(set) var feeds: [Channel: Set<Feed>] = [:]
     
+    // ok, bit explanation here... we are periodically fetching feeds async manner. It's quite possible
+    // that reading feeds and writing feeds can happen simultaneously
+    // thus making reading and writing to happen on this queue and managing writing to be w/ .barrier flag
+    // there is no race condition ever.
+    private let feedsQueue = DispatchQueue(label: "com.kaukalo.myMind.FeedsModel.feedsQueue",
+                                           qos: .userInitiated,
+                                           attributes: .concurrent,
+                                           autoreleaseFrequency: .inherit,
+                                           target: nil)
+    
     init() {
         updateModel()
         startPeriodicFeedFetching()
@@ -85,7 +95,10 @@ class FeedsModel {
     }
     
     func feeds(for channel: Channel) -> Set<Feed> {
-        feeds[channel] ?? []
+        // so, using our queue to read
+        feedsQueue.sync {
+            feeds[channel] ?? []
+        }
     }
     
     var atLeastSomeFeedsAreAvailable: Bool { !feeds.isEmpty }
@@ -97,10 +110,14 @@ class FeedsModel {
                 Task(priority: .userInitiated) {
                     do {
                         let feedsForUrl = try await feedsFetcher.getFeeds(from: feedUrl)
-                        if feeds[topic] == nil {
-                            feeds[topic] = feedsForUrl
-                        } else {
-                            feeds[topic] = feeds[topic]!.union(feedsForUrl)
+                        // this is the real trick... we write feeds so that it's quaranteed
+                        // that no other writes or reads are happening at the same time...
+                        feedsQueue.async(flags: .barrier) { [weak self] in
+                            if self?.feeds[topic] == nil {
+                                self?.feeds[topic] = feedsForUrl
+                            } else {
+                                self?.feeds[topic] = self?.feeds[topic]!.union(feedsForUrl)
+                            }
                         }
                     } catch {
                         // not implemented, should alert user about errors
@@ -118,6 +135,7 @@ class FeedsModel {
         }
     }
     
+
 }
 
 
