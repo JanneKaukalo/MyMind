@@ -76,6 +76,7 @@ struct ChannelView: View {
                     Text(feed.itemTitle)
                         .font(.myMindBody).bold()
                         .padding(.vertical)
+                        .layoutPriority(1) // if feed.channelTitle is long this is needed to prevent shrinking
                     HStack(spacing: Constants.feedsChannelSpacing) {
                         Label(feed.channelTitle, image: "icon_list_source")
                         Label(dateFormatter.string(from: feed.itemPubDate), image: "icon_list_time")

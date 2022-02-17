@@ -15,11 +15,11 @@ extension String {
         return first + dropFirst()
     }
     
-    func deleteHTML(tag:String) -> String {
+    func deleteHTML(tag: String) -> String {
         replacingOccurrences(of: "(?i)</?\(tag)\\b[^<]*>", with: "", options: .regularExpression, range: nil)
     }
 
-    func deleteHTML(tags:[String]) -> String {
+    func deleteHTML(tags: [String]) -> String {
         var mutableString = self
         tags.forEach {
             mutableString = mutableString.deleteHTML(tag: $0)

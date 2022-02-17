@@ -100,9 +100,9 @@ class FeedsData: ObservableObject {
             value /= 1000
             index += 1
         }
-        // ok, in design wanted to get in full values etc. would probably make more sense to have one decimal
-        // -> "%.1f%@"
-        return String(format: "%.0f%@", value, suffix[index])
+        // ok, in design wanted to be in full values -> "%.0f%@"
+        // one decimal makes more sense to me
+        return String(format: "%.1f%@", value, suffix[index])
     }
     
 }
