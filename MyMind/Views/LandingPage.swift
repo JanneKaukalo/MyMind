@@ -28,7 +28,7 @@ struct LandingPage: View {
                    
             }
         }
-        .fullScreenCover(isPresented: $data.feedsAreAvailable) {
+        .fullScreenCover(isPresented: $data.feedsReady) {
             ChannelSelectionView()
         }
         .environmentObject(data)

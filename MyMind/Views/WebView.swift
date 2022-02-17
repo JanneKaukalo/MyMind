@@ -10,28 +10,34 @@ import WebKit
 
 class WebViewDelegate: NSObject, WKNavigationDelegate {
  
-    @Binding private var finishedLoading: Bool
+    @Binding private var showActivityIndicator: Bool
     
-    init(_ doneLoading: Binding<Bool>) {
-        self._finishedLoading = doneLoading
+    init(_ showActivityIndicator: Binding<Bool>) {
+        self._showActivityIndicator = showActivityIndicator
     }
     
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        guard !webView.isLoading else { return }
-        finishedLoading = true
+    // use this if want to show activityIndicator until whole view has been loaded
+//    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+//        guard !webView.isLoading else { return }
+//        finishedLoading = true
+//    }
+    
+    // hiding activity indicator immediately when web view start to show
+    // not perfect timing but way better than above
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        showActivityIndicator = false
     }
+    
 }
 
 struct WebView: UIViewRepresentable {
 
     private var url: URL
     private var webViewDelegate: WebViewDelegate
-    @Binding private var finishedLoading: Bool
     
-    init(url: URL, doneLoading: Binding<Bool>) {
+    init(url: URL, showActivityIndicator: Binding<Bool>) {
         self.url = url
-        self._finishedLoading = doneLoading
-        self.webViewDelegate = WebViewDelegate(doneLoading)
+        self.webViewDelegate = WebViewDelegate(showActivityIndicator)
     }
     
     func makeUIView(context: Context) -> some UIView {

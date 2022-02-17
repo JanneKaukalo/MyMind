@@ -19,7 +19,6 @@ struct MyMindSettings {
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(.myMindWhite),
                                                .font: UIFont(name: "HelveticaNeue-Bold",
                                                              size: 30)!]
-//        appearance.backButtonAppearance.normal.
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance

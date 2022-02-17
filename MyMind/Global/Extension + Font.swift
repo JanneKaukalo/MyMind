@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension Font {
+    //MARK: - MyMindFonts
     static let myMindTitleThumbnail = Font.custom("Helvetica Neue", fixedSize: 12)
         .uppercaseSmallCaps()
     static let myMindTitleChannel = Font.custom("Helvetica Neue", fixedSize: 20)
@@ -17,5 +18,9 @@ extension Font {
     static let myMindBody = Font.custom("Helvetica Neue", fixedSize: 14)
     static let myMindBodyBold = myMindBody.bold()
     static let myMindDescription = Font.custom("Helvetica Neue", fixedSize: 12)
+    
 }
+
+
+
 

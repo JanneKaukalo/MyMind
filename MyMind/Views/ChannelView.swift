@@ -42,14 +42,26 @@ struct ChannelView: View {
             VStack {
                 Text("\(channel.description) channel".uppercased())
                     .font(.myMindTitleChannel)
-                Text(FeedsData.FeedGategory.following.description)
-                    .font(.myMindTitleThumbnail).bold()
+                Text(data.isFollowing(channel) ? "Following" : "Follow")
+                    .font(.myMindTitleThumbnail)
+                    .fontWeight(data.isFollowing(channel) ? .bold : .regular)
                     .frame(width: width / Constants.gategoryWidthDivider, height: width / Constants.gategoryHeightDivider)
                     .background {
-                        RoundedRectangle(cornerRadius: width / Constants.gategoryHeightDivider / 2)
-                            .fill(Color.myMindPink)
+                        Group { // check if there is a better way to do this
+                            if data.isFollowing(channel) {
+                                RoundedRectangle(cornerRadius: width / Constants.gategoryHeightDivider / 2)
+                            } else {
+                                RoundedRectangle(cornerRadius: width / Constants.gategoryHeightDivider / 2)
+                                    .stroke(lineWidth: Constants.selectedGategoryLineWidth)
+                            }
+                        }
+                        .foregroundColor(.myMindPink)
                     }
-                    .opacity(data.isFollowing(channel) ? 1 : 0)
+                    .onTapGesture {
+                        withAnimation {
+                            data.toggle(channel)
+                        }
+                    }
                 Text("\(data.followers(for: channel)) Followers")
                     .font(.myMindTitleCategory)
             }
@@ -60,13 +72,13 @@ struct ChannelView: View {
     private var feeds: some View {
         List {
             ForEach(data.feeds(for: channel)) { feed in
-                VStack(alignment: .leading, spacing: 3) {
+                VStack(alignment: .leading, spacing: Constants.feedsSpacing) {
                     Text(feed.itemTitle)
                         .font(.myMindBody).bold()
                         .padding(.vertical)
-                    HStack(spacing: 10) {
+                    HStack(spacing: Constants.feedsChannelSpacing) {
                         Label(feed.channelTitle, image: "icon_list_source")
-                        Label(dateFormatter.string(from: feed.itemDate), image: "icon_list_time")
+                        Label(dateFormatter.string(from: feed.itemPubDate), image: "icon_list_time")
                     }
                     .font(.myMindDescription)
                 }
@@ -83,10 +95,11 @@ struct ChannelView: View {
     }
     
     private struct Constants {
-        static let selectionPadding: CGFloat = 20
         static let gategoryWidthDivider: CGFloat = 4
         static let gategoryHeightDivider: CGFloat = gategoryWidthDivider * 3
         static let selectedGategoryLineWidth: CGFloat = 1
+        static let feedsSpacing: CGFloat = 3
+        static let feedsChannelSpacing: CGFloat = 10
     }
 }
 

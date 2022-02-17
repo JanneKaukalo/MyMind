@@ -6,97 +6,104 @@
 //
 
 import Foundation
-
+import Combine
 
 class FeedsData: ObservableObject {
     
     typealias Feed = FeedsModel.Feed
     typealias Channel = FeedsModel.Channel
     
-    enum FeedGategory: Int, CaseIterable, Identifiable, CustomStringConvertible, Equatable {
-        case following = 0, popular, explore
-        
-        var id: Int { rawValue }
-        var description: String {
-            switch self {
-            case .following:
-                return "Following"
-            case .popular:
-                return "Popular"
-            case .explore:
-                return "Explore"
-            }
-        }
+    enum FeedGategory: String, CaseIterable, Identifiable {
+        case following, popular, explore
+        var id: String { rawValue }
     }
     
-    @Published var feeds: [FeedGategory: [Feed]] = [:] // create correct type for feeds
-    @Published private(set) var feedsSelection: FeedGategory!
-    private(set) var channels: [FeedGategory: [Channel]] = [.following: [.science, .auto, .technology,
-                                                                            .environment, .finances],
-                                                            .popular: [.fashion, .auto, .entertainment,
-                                                                        .environment, .finances, .travel],
-                                                            .explore: [.fashion, .science, .auto, .technology,
-                                                                        .entertainment, .environment, .finances, .travel]]
-    
+    @Published private var followingChannels: [Channel]!
     private var model = FeedsModel()
     
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
+        
+    
+    private var cancellable: AnyCancellable?
+    @Published private var feedsUpdated = false
+    
     init() {
-        simulateFeedsDownload()
-        setFeedsSelection()
+        setFollowingChannel()
+        cancellable = model.$feeds
+            .receive(on: RunLoop.main)
+            .sink() { _ in self.feedsUpdated.toggle() }
     }
     
     // MARK: - API
-    var feedsAreAvailable: Bool {
-        get { !feeds.isEmpty }
-        set {
-            guard !newValue else { return }
-            feeds[.explore] = [Feed(channelTitle: "Janne",
-                        channelLink: "www.kaukalo.fi",
-                        itemDate: Date(),
-                        itemTitle: "Kelmi",
-                        itemDescription: "hevonen joka jaksaa yllättää",
-                        itemLink: "https://www.equineiq.io")]
-        }
+    // bit wacky way, but I need to be able to tell from model if some feeds area available
+    var feedsReady: Bool {
+        get { model.atLeastSomeFeedsAreAvailable }
+        set { }
     }
+
     
     var gategories: [FeedGategory] {
         FeedGategory.allCases
     }
     
-    func didSelect(_ feed: FeedGategory) {
-        feedsSelection = feed
-    }
-    
-    func isFollowing(_ channel: Channel) -> Bool {
-        channels[.following]?.contains(channel) ?? false
-    }
-    
-    func followers(for channel: Channel) -> String {
-        "\((0...500).randomElement()!)K"
-    }
-    
-    func feeds(for channel: Channel) -> [Feed] {
-        [Feed(channelTitle: "Janne",
-                    channelLink: "www.kaukalo.fi",
-                    itemDate: Date(),
-                    itemTitle: "Kelmi",
-                    itemDescription: "hevonen joka jaksaa yllättää",
-                    itemLink: "https://www.equineiq.io")]
-    }
-    
-    // NARK: - private methods
-    private func simulateFeedsDownload() {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
-            self?.feeds[.explore] = [Feed(channelTitle: "Janne",
-                                         channelLink: "www.kaukalo.fi",
-                                         itemDate: Date(),
-                                         itemTitle: "Kelmi",
-                                         itemDescription: "hevonen joka jaksaa yllättää",
-                                         itemLink: "https://www.equineiq.io")]
+    func channels(for gategory: FeedGategory) -> [Channel] {
+        switch gategory {
+        case .following:
+            return followingChannels
+        case .popular:
+            return model.popularChannels
+        case .explore:
+            return model.allChannels
         }
     }
     
-    private func setFeedsSelection() {
-        feedsSelection = FeedGategory.allCases.randomElement()
+    func isFollowing(_ channel: Channel) -> Bool {
+        followingChannels.contains(channel)
     }
+    
+    func followers(for channel: Channel) -> String {
+        let number = model.followers(for: channel)
+        return channelFollowers(for: number)
+    }
+    
+    func feeds(for channel: Channel) -> [Feed] {
+        model.feeds(for: channel)
+            .sorted( by: { $0.itemPubDate > $1.itemPubDate} )
+    }
+    
+    func toggle(_ channel: Channel) {
+        if followingChannels.contains(channel) {
+            guard let index = followingChannels.firstIndex(of: channel) else { return }
+            followingChannels.remove(at: index)
+        } else {
+            followingChannels.append(channel)
+        }
+        guard let data = try? encoder.encode(followingChannels) else { return }
+        UserDefaults.standard.set(data, forKey: FeedGategory.following.rawValue)
+    }
+
+    
+    // MARK: - private methods
+    private func setFollowingChannel() {
+        guard let data = UserDefaults.standard.data(forKey: FeedGategory.following.rawValue) else {
+            followingChannels = []; return }
+        let following = try? decoder.decode(Array<Channel>.self, from: data)
+        followingChannels = following ?? []
+    }
+    
+    private func channelFollowers(for number: Int) -> String {
+        let suffix = ["", "K", "M"]
+        var index = 0
+        var value = Double(number)
+        while((value / 1000) >= 1) && index < 2 {
+            value /= 1000
+            index += 1
+        }
+        // ok, in design wanted to get in full values etc. would probably make more sense to have one decimal
+        // -> "%.1f%@"
+        return String(format: "%.0f%@", value, suffix[index])
+    }
+    
 }
+

@@ -12,15 +12,15 @@ struct FeedView: View {
     
     var channel: FeedsData.Channel
     var url: URL
-    @State private var webViewHasFinishedLoading = false
+    @State private var showActivityIndicator = true
     
     var body: some View {
         NavigationView {
             ZStack {
-                WebView(url: url, doneLoading: $webViewHasFinishedLoading)
+                WebView(url: url, showActivityIndicator: $showActivityIndicator)
                     .navigationBarTitle("\(channel.description) channel".uppercased())
                     .navigationBarTitleDisplayMode(.inline)
-                if !webViewHasFinishedLoading {
+                if showActivityIndicator {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .myMindDarkBlue))
                         .scaleEffect(1.5)

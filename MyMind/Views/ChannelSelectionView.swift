@@ -10,6 +10,7 @@ import SwiftUI
 struct ChannelSelectionView: View {
     
     @EnvironmentObject var data: FeedsData
+    @State private var feedsSelection: FeedsData.FeedGategory = .following
     
     var body: some View {
         NavigationView {
@@ -37,19 +38,19 @@ struct ChannelSelectionView: View {
     private func gategorySelections(for width: CGFloat) -> some View {
         HStack(alignment: .center, spacing: 0) {
             ForEach(data.gategories) { gategory in
-                Text(gategory.description)
-                    .font(data.feedsSelection != gategory ? .myMindTitleThumbnail : .myMindTitleThumbnail.bold())
+                Text(gategory.rawValue.firstUppercased)
+                    .font(feedsSelection != gategory ? .myMindTitleThumbnail : .myMindTitleThumbnail.bold())
                 // really bad way to get even frame for all... but enough for now
                     .frame(width: width / Constants.gategoryWidthDivider, height: width / Constants.gategoryHeightDivider)
                     .overlay {
                         RoundedRectangle(cornerRadius: width / Constants.gategoryHeightDivider / 2)
                             .stroke(lineWidth: Constants.selectedGategoryLineWidth)
                             .foregroundColor(.myMindPink)
-                            .opacity(data.feedsSelection != gategory ? 0 : 1)
+                            .opacity(feedsSelection != gategory ? 0 : 1)
                     }
                     .onTapGesture {
                         withAnimation {
-                            data.didSelect(gategory)
+                            feedsSelection = gategory
                         }
                     }
                 if gategory != data.gategories.last {
@@ -64,7 +65,7 @@ struct ChannelSelectionView: View {
     private var channels: some View {
         ScrollView {
             LazyVGrid(columns: gridItems(), alignment: .center, spacing: 0) {
-                ForEach(data.channels[data.feedsSelection]!, id: \.self) { channel in
+                ForEach(data.channels(for: feedsSelection)) { channel in
                     NavigationLink(destination: ChannelView(channel: channel)) {
                         ZStack {
                             Image("channel_\(channel)")

@@ -42,5 +42,9 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>UIRequiresPersistentWiFi</key>
+	<true/>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>
