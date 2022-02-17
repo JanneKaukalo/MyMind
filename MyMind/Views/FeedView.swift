@@ -18,14 +18,14 @@ struct FeedView: View {
         NavigationView {
             ZStack {
                 WebView(url: url, showActivityIndicator: $showActivityIndicator)
-                    .navigationBarTitle("\(channel.description) channel".uppercased())
-                    .navigationBarTitleDisplayMode(.inline)
                 if showActivityIndicator {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .myMindDarkBlue))
                         .scaleEffect(1.5)
                 }
             }
+            .navigationBarTitle("\(channel.description) channel".uppercased())
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
