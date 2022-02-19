@@ -27,7 +27,7 @@ class FeedsModel {
         
         // MARK: - Hashable
         // just want to use id as hash value even
-        // even Feed actually would be automatically hashable
+        // Feed actually would be automatically hashable
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
         }
@@ -42,7 +42,7 @@ class FeedsModel {
     
     private let feedsFetcher = FeedsFetcher.shared
     // this should either be a dedicated backend call to get rss feed urls or
-    // app needs to have a way to look for channels have them stored
+    // app needs to have a way to look for available channels
     private var feedURLs: [Channel: [String]]  = [.fashion: ["https://www.elle.com/rss/all.xml/"],
                                                   .science: ["https://www.newscientist.com/feed/home/?cmpid=RSS%7CNSNS-Home"],
                                                   .auto: ["https://paultan.org/feed/"],

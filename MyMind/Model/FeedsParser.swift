@@ -90,7 +90,12 @@ class FeedsParser: XMLParser, XMLParserDelegate {
         }
         
     }
-
+    
+    /// Helper to create Date from given date string. If nil -> returns current date.
+    ///
+    /// - Note: crashes if value is not in right format
+    /// - Parameter value: in format: "Fri, 18 Feb 2022 09:32:52 +0000"
+    /// - Returns: Date from value
     private func createDate(from value: String?) -> Date {
         guard let value = value else { return Date() }
         let dateValues = value.components(separatedBy: [" ", ",", ":"])
