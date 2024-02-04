@@ -12,6 +12,7 @@ import Network
 
 actor Feeds: FeedsService {
     
+    // bit old habit...
     private let nwPathMonitor = NWPathMonitor()
     // this should either be a dedicated backend call to get rss feed urls or
     // app needs to have a way to look for available channels
@@ -86,7 +87,7 @@ actor Feeds: FeedsService {
         return data
     }
     
-    private func parse(feedAbstractsFrom data: Data) -> Set<FeedItem> {
+    private func parse(feedItemsFrom data: Data) -> Set<FeedItem> {
         let parser = FeedParser(data: data)
         let result = parser.parse()
         switch result {
@@ -112,7 +113,7 @@ actor Feeds: FeedsService {
                     group.addTask {
                         do {
                             let feedData = try await self.get(feedsDataFrom: feedURL)
-                            let feeds = await self.parse(feedAbstractsFrom: feedData)
+                            let feeds = await self.parse(feedItemsFrom: feedData)
                             await self.update(feedsFrom: feeds, on: topic)
                         } catch {
                             // TODO: this should give some reasonable error to user
