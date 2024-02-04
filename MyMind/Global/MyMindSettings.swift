@@ -22,7 +22,7 @@ struct MyMindSettings {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        UINavigationBar.appearance().tintColor = UIColor(.myMindWhite)
+        UIBarButtonItem.appearance().tintColor = UIColor(.myMindWhite)
     }
     
     

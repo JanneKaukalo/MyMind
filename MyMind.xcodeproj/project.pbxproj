@@ -9,12 +9,15 @@
 /* Begin PBXBuildFile section */
 		432FA1DB27B8E7AB009EE677 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FA1DA27B8E7AB009EE677 /* FeedsData.swift */; };
 		432FA1DE27B92D2A009EE677 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FA1DD27B92D2A009EE677 /* ChannelView.swift */; };
-		43A7225127BD3DCD0043224E /* FeedsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A7225027BD3DCD0043224E /* FeedsParser.swift */; };
+		438CD5052B6E82E900DFF441 /* FeedKit in Frameworks */ = {isa = PBXBuildFile; productRef = 438CD5042B6E82E900DFF441 /* FeedKit */; };
+		438DA0E02B6F86780094C1C3 /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438DA0DF2B6F86780094C1C3 /* FeedItem.swift */; };
+		438DA0E42B6F86C20094C1C3 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438DA0E32B6F86C20094C1C3 /* Channel.swift */; };
+		438DA0E62B6F88480094C1C3 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438DA0E52B6F88480094C1C3 /* Category.swift */; };
+		438DA0E82B6F8BAC0094C1C3 /* FeedsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438DA0E72B6F8BAC0094C1C3 /* FeedsService.swift */; };
 		43D5406E27BA56A600AFB641 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5406D27BA56A600AFB641 /* FeedView.swift */; };
 		43D5407527BA67EE00AFB641 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5407427BA67EE00AFB641 /* WebView.swift */; };
-		43D5407927BA9CC100AFB641 /* FeedsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5407827BA9CC100AFB641 /* FeedsModel.swift */; };
+		43D5407927BA9CC100AFB641 /* Feeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5407827BA9CC100AFB641 /* Feeds.swift */; };
 		43D5407C27BBA21000AFB641 /* Extension + String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5407B27BBA21000AFB641 /* Extension + String.swift */; };
-		43D5408027BBDE1900AFB641 /* FeedsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5407F27BBDE1900AFB641 /* FeedsFetcher.swift */; };
 		43EE602527B7E59B002590A4 /* MyMindApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EE602427B7E59B002590A4 /* MyMindApp.swift */; };
 		43EE602727B7E59B002590A4 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EE602627B7E59B002590A4 /* LandingPage.swift */; };
 		43EE602927B7E5A0002590A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43EE602827B7E5A0002590A4 /* Assets.xcassets */; };
@@ -28,13 +31,15 @@
 /* Begin PBXFileReference section */
 		432FA1DA27B8E7AB009EE677 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
 		432FA1DD27B92D2A009EE677 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
-		43A7225027BD3DCD0043224E /* FeedsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsParser.swift; sourceTree = "<group>"; };
+		438DA0DF2B6F86780094C1C3 /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		438DA0E32B6F86C20094C1C3 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		438DA0E52B6F88480094C1C3 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		438DA0E72B6F8BAC0094C1C3 /* FeedsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsService.swift; sourceTree = "<group>"; };
 		43D5406D27BA56A600AFB641 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		43D5407427BA67EE00AFB641 /* WebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		43D5407627BA786A00AFB641 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = SOURCE_ROOT; };
-		43D5407827BA9CC100AFB641 /* FeedsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsModel.swift; sourceTree = "<group>"; };
+		43D5407827BA9CC100AFB641 /* Feeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feeds.swift; sourceTree = "<group>"; };
 		43D5407B27BBA21000AFB641 /* Extension + String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + String.swift"; sourceTree = "<group>"; };
-		43D5407F27BBDE1900AFB641 /* FeedsFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FeedsFetcher.swift; path = MyMind/ViewModels/FeedsFetcher.swift; sourceTree = SOURCE_ROOT; };
 		43EE602127B7E59B002590A4 /* MyMind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyMind.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43EE602427B7E59B002590A4 /* MyMindApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMindApp.swift; sourceTree = "<group>"; };
 		43EE602627B7E59B002590A4 /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
@@ -51,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				438CD5052B6E82E900DFF441 /* FeedKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				432FA1DA27B8E7AB009EE677 /* FeedsData.swift */,
+				438DA0E52B6F88480094C1C3 /* Category.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -68,9 +75,10 @@
 		43D5407A27BA9CC700AFB641 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				43D5407F27BBDE1900AFB641 /* FeedsFetcher.swift */,
-				43A7225027BD3DCD0043224E /* FeedsParser.swift */,
-				43D5407827BA9CC100AFB641 /* FeedsModel.swift */,
+				43D5407827BA9CC100AFB641 /* Feeds.swift */,
+				438DA0E72B6F8BAC0094C1C3 /* FeedsService.swift */,
+				438DA0E32B6F86C20094C1C3 /* Channel.swift */,
+				438DA0DF2B6F86780094C1C3 /* FeedItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -153,6 +161,9 @@
 			dependencies = (
 			);
 			name = MyMind;
+			packageProductDependencies = (
+				438CD5042B6E82E900DFF441 /* FeedKit */,
+			);
 			productName = MyMind;
 			productReference = 43EE602127B7E59B002590A4 /* MyMind.app */;
 			productType = "com.apple.product-type.application";
@@ -165,7 +176,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					43EE602027B7E59B002590A4 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -181,6 +192,9 @@
 				Base,
 			);
 			mainGroup = 43EE601827B7E59B002590A4;
+			packageReferences = (
+				438CD5032B6E82E900DFF441 /* XCRemoteSwiftPackageReference "FeedKit" */,
+			);
 			productRefGroup = 43EE602227B7E59B002590A4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -208,6 +222,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				43EE604327B7F682002590A4 /* MyMindSettings.swift in Sources */,
+				438DA0E42B6F86C20094C1C3 /* Channel.swift in Sources */,
+				438DA0E02B6F86780094C1C3 /* FeedItem.swift in Sources */,
 				43D5406E27BA56A600AFB641 /* FeedView.swift in Sources */,
 				43D5407C27BBA21000AFB641 /* Extension + String.swift in Sources */,
 				43EE603F27B7F466002590A4 /* Extension + Color.swift in Sources */,
@@ -216,11 +232,11 @@
 				432FA1DB27B8E7AB009EE677 /* FeedsData.swift in Sources */,
 				43EE602727B7E59B002590A4 /* LandingPage.swift in Sources */,
 				43EE602527B7E59B002590A4 /* MyMindApp.swift in Sources */,
-				43A7225127BD3DCD0043224E /* FeedsParser.swift in Sources */,
-				43D5408027BBDE1900AFB641 /* FeedsFetcher.swift in Sources */,
+				438DA0E62B6F88480094C1C3 /* Category.swift in Sources */,
 				43EE604927B82015002590A4 /* ChannelSelectionView.swift in Sources */,
 				43D5407527BA67EE00AFB641 /* WebView.swift in Sources */,
-				43D5407927BA9CC100AFB641 /* FeedsModel.swift in Sources */,
+				43D5407927BA9CC100AFB641 /* Feeds.swift in Sources */,
+				438DA0E82B6F8BAC0094C1C3 /* FeedsService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +247,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -264,6 +281,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -292,6 +310,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -325,6 +344,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -429,6 +449,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		438CD5032B6E82E900DFF441 /* XCRemoteSwiftPackageReference "FeedKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nmdias/FeedKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		438CD5042B6E82E900DFF441 /* FeedKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 438CD5032B6E82E900DFF441 /* XCRemoteSwiftPackageReference "FeedKit" */;
+			productName = FeedKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 43EE601927B7E59B002590A4 /* Project object */;
 }

@@ -10,51 +10,44 @@ import Combine
 
 class FeedsData: ObservableObject {
     
-    typealias Feed = FeedsModel.Feed
-    typealias Channel = FeedsModel.Channel
-    
-    enum FeedGategory: String, CaseIterable, Identifiable {
-        case following, popular, explore
-        var id: String { rawValue }
-    }
-    
     @Published private var followingChannels: [Channel]!
-    private var model = FeedsModel()
-    
-    private let encoder = JSONEncoder()
-    private let decoder = JSONDecoder()
-        
-    
-    private var cancellable: AnyCancellable?
     @Published private var feedsUpdated = false
     
-    init() {
+    private let feedsService: FeedsService
+    private lazy var encoder = JSONEncoder()
+    private lazy var decoder = JSONDecoder()
+    private var cancellable: AnyCancellable?
+    private var feedsAvailable = false
+    
+    init(feedsService: FeedsService) {
+        self.feedsService = feedsService
         setFollowingChannel()
-        cancellable = model.$feeds
+        cancellable = feedsService.feedsUpdated
             .receive(on: RunLoop.main)
-            .sink() { _ in self.feedsUpdated.toggle() }
+            .sink() { _ in
+                self.feedsUpdated.toggle()
+                self.feedsAvailable = true
+            }
     }
     
     // MARK: - API
     // bit wacky way, but I need to be able to tell from model if some feeds area available
+    // this is used by landingPage as Binding --> { get set }
     var feedsReady: Bool {
-        get { model.atLeastSomeFeedsAreAvailable }
+        get { feedsAvailable }
         set { }
     }
 
+    var categories: [Category] { Category.allCases }
     
-    var gategories: [FeedGategory] {
-        FeedGategory.allCases
-    }
-    
-    func channels(for gategory: FeedGategory) -> [Channel] {
-        switch gategory {
+    func channels(for category: Category) -> [Channel] {
+        switch category {
         case .following:
             return followingChannels
         case .popular:
-            return model.popularChannels
+            return feedsService.popularChannels
         case .explore:
-            return model.allChannels
+            return feedsService.allChannels
         }
     }
     
@@ -62,14 +55,14 @@ class FeedsData: ObservableObject {
         followingChannels.contains(channel)
     }
     
-    func followers(for channel: Channel) -> String {
-        let number = model.followers(for: channel)
+    func followers(for channel: Channel) async -> String {
+        let number = await feedsService.followers(for: channel)
         return channelFollowers(for: number)
     }
     
-    func feeds(for channel: Channel) -> [Feed] {
-        model.feeds(for: channel)
-            .sorted( by: { $0.itemPubDate > $1.itemPubDate} )
+    func feeds(for channel: Channel) async -> [FeedItem] {
+        await feedsService.feeds(for: channel)
+            .sorted( by: { $0.pubDate > $1.pubDate} )
     }
     
     func toggle(_ channel: Channel) {
@@ -80,13 +73,13 @@ class FeedsData: ObservableObject {
             followingChannels.append(channel)
         }
         guard let data = try? encoder.encode(followingChannels) else { return }
-        UserDefaults.standard.set(data, forKey: FeedGategory.following.rawValue)
+        UserDefaults.standard.set(data, forKey: Category.following.rawValue)
     }
 
     
     // MARK: - private methods
     private func setFollowingChannel() {
-        guard let data = UserDefaults.standard.data(forKey: FeedGategory.following.rawValue) else {
+        guard let data = UserDefaults.standard.data(forKey: Category.following.rawValue) else {
             followingChannels = []; return }
         let following = try? decoder.decode(Array<Channel>.self, from: data)
         followingChannels = following ?? []
@@ -96,14 +89,16 @@ class FeedsData: ObservableObject {
         let suffix = ["", "K", "M"]
         var index = 0
         var value = Double(number)
-        while((value / 1000) >= 1) && index < 2 {
+        while ((value / 1000) >= 1) && index < 2 {
             value /= 1000
             index += 1
         }
-        // ok, in design wanted to be in full values -> "%.0f%@"
-        // one decimal makes more sense to me
-        return String(format: "%.1f%@", value, suffix[index])
+        // ok, in design requirements should show only full values -> "%.0f%@"
+        // however one decimal makes more sense when more than 1_000 subs
+        let valueFormat = index == 0 ? "%.0f%@" : "%.1f%@"
+        return String(format: valueFormat, value, suffix[index])
     }
     
 }
+
 

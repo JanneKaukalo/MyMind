@@ -10,8 +10,10 @@ import SwiftUI
 struct ChannelView: View {
     
     @EnvironmentObject var data: FeedsData
-    @State private var selectedFeed: FeedsData.Feed?
-    var channel: FeedsData.Channel
+    @State private var selectedFeed: FeedItem?
+    @State private var channelFollowers = ""
+    @State private var feedsForChannel: [FeedItem] = []
+    var channel: Channel
     
     var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -62,24 +64,29 @@ struct ChannelView: View {
                             data.toggle(channel)
                         }
                     }
-                Text("\(data.followers(for: channel)) Followers")
+                Text("\(channelFollowers) Followers")
                     .font(.myMindTitleCategory)
             }
             .foregroundColor(.myMindWhite)
+        }
+        .task {
+            channelFollowers = await data.followers(for: channel)
         }
     }
     
     private var feeds: some View {
         List {
-            ForEach(data.feeds(for: channel)) { feed in
+            ForEach(feedsForChannel) { feed in
                 VStack(alignment: .leading, spacing: Constants.feedsSpacing) {
-                    Text(feed.itemTitle)
+                    Text(feed.title)
                         .font(.myMindBody).bold()
                         .padding(.vertical)
                         .layoutPriority(1) // if feed.channelTitle is long this is needed to prevent shrinking
                     HStack(spacing: Constants.feedsChannelSpacing) {
-                        Label(feed.channelTitle, image: "icon_list_source")
-                        Label(dateFormatter.string(from: feed.itemPubDate), image: "icon_list_time")
+                        Label(feed.author ?? "Unknow author", image: "icon_list_source")
+                        Spacer()
+                        Label(dateFormatter.string(from: feed.pubDate), image: "icon_list_time")
+                            .padding(.trailing)
                     }
                     .font(.myMindDescription)
                 }
@@ -89,9 +96,12 @@ struct ChannelView: View {
                 .foregroundColor(.myMindBlack)
             }
         }
+        .task {
+            feedsForChannel = await data.feeds(for: channel)
+        }
         .listStyle(.plain)
         .sheet(item: $selectedFeed) { feed in
-            FeedView(channel: channel, url: URL(string: feed.itemLink)!)
+            FeedView(channel: channel, url: URL(string: feed.link)!)
         }
     }
     
@@ -108,7 +118,7 @@ struct ChannelView: View {
 struct ChannelView_Previews: PreviewProvider {
     
     struct ChannelViewWrapper: View {
-        @StateObject var data = FeedsData()
+        @StateObject var data = FeedsData(feedsService: Feeds())
         var body: some View {
             ChannelView(channel: .science)
                 .environmentObject(data)

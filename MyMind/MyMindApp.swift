@@ -16,7 +16,7 @@ struct MyMindApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LandingPage()
+            LandingPage(data: FeedsData(feedsService: Feeds()))
         }
     }
     

@@ -10,7 +10,7 @@ import SwiftUI
 struct ChannelSelectionView: View {
     
     @EnvironmentObject var data: FeedsData
-    @State private var feedsSelection: FeedsData.FeedGategory = .following
+    @State private var feedsSelection: Category = .following
     
     var body: some View {
         NavigationView {
@@ -20,7 +20,7 @@ struct ChannelSelectionView: View {
                         .resizable()
                         .ignoresSafeArea()
                     VStack(alignment: .center, spacing: 0) {
-                        gategorySelections(for: geometry.size.width)
+                        categorySelections(for: geometry.size.width)
                             .padding(Constants.selectionPadding)
                         channels
                     }
@@ -35,25 +35,25 @@ struct ChannelSelectionView: View {
         }
     }
     
-    private func gategorySelections(for width: CGFloat) -> some View {
+    private func categorySelections(for width: CGFloat) -> some View {
         HStack(alignment: .center, spacing: 0) {
-            ForEach(data.gategories) { gategory in
-                Text(gategory.rawValue.firstUppercased)
-                    .font(feedsSelection != gategory ? .myMindTitleThumbnail : .myMindTitleThumbnail.bold())
+            ForEach(data.categories) { category in
+                Text(category.rawValue.firstUppercased)
+                    .font(feedsSelection != category ? .myMindTitleThumbnail : .myMindTitleThumbnail.bold())
                 // really bad way to get even frame for all... but enough for now
-                    .frame(width: width / Constants.gategoryWidthDivider, height: width / Constants.gategoryHeightDivider)
+                    .frame(width: width / Constants.categoryWidthDivider, height: width / Constants.categoryHeightDivider)
                     .overlay {
-                        RoundedRectangle(cornerRadius: width / Constants.gategoryHeightDivider / 2)
-                            .stroke(lineWidth: Constants.selectedGategoryLineWidth)
+                        RoundedRectangle(cornerRadius: width / Constants.categoryHeightDivider / 2)
+                            .stroke(lineWidth: Constants.selectedCategoryLineWidth)
                             .foregroundColor(.myMindPink)
-                            .opacity(feedsSelection != gategory ? 0 : 1)
+                            .opacity(feedsSelection != category ? 0 : 1)
                     }
                     .onTapGesture {
                         withAnimation {
-                            feedsSelection = gategory
+                            feedsSelection = category
                         }
                     }
-                if gategory != data.gategories.last {
+                if category != data.categories.last {
                     Spacer()
                 }
             }
@@ -97,16 +97,16 @@ struct ChannelSelectionView: View {
     
     private struct Constants {
         static let selectionPadding: CGFloat = 20
-        static let gategoryWidthDivider: CGFloat = 4
-        static let gategoryHeightDivider: CGFloat = gategoryWidthDivider * 3
-        static let selectedGategoryLineWidth: CGFloat = 1
+        static let categoryWidthDivider: CGFloat = 4
+        static let categoryHeightDivider: CGFloat = categoryWidthDivider * 3
+        static let selectedCategoryLineWidth: CGFloat = 1
     }
 }
 
 struct ChannelSelectionView_Previews: PreviewProvider {
     
     struct ChannelSelectionWrapper: View {
-        @StateObject var data = FeedsData()
+        @StateObject var data = FeedsData(feedsService: Feeds())
         var body: some View {
             ChannelSelectionView()
                 .environmentObject(data)

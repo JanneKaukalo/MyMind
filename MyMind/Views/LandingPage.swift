@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LandingPage: View {
     
-    @StateObject var data = FeedsData()
+    @StateObject var data: FeedsData
     
     var body: some View {
         GeometryReader { geometry in
@@ -36,7 +36,15 @@ struct LandingPage: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    
+    struct LandingPageWrapper: View {
+        let data = FeedsData(feedsService: Feeds())
+        var body: some View {
+            LandingPage(data: data)
+        }
+    }
+    
     static var previews: some View {
-        LandingPage()
+        LandingPageWrapper()
     }
 }

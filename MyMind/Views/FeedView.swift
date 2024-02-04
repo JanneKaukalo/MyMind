@@ -10,7 +10,7 @@ import WebKit
 
 struct FeedView: View {
     
-    var channel: FeedsData.Channel
+    var channel: Channel
     var url: URL
     @State private var showActivityIndicator = true
     
